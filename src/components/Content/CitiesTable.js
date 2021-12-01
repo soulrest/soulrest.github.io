@@ -1,17 +1,18 @@
 import React from "react";
 
 const CitiesTable = (props) => {
-  const { cities, city, handleWeaterDataChange } = props;
+  const { cities, handleWeaterDataChange } = props;
 
   const handleCityDataDisplay = (value) => {
     handleWeaterDataChange(value);
   };
 
   let output;
-  if (!cities && !city) {
+  if (!cities) {
     output = null;
     return;
   }
+
   output = cities.map((city, index) => (
     <tr onClick={() => handleCityDataDisplay(city)} key={city.id}>
       <th scope="row">{index + 1}</th>

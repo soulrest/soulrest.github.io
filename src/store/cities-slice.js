@@ -14,7 +14,7 @@ const citiesSlice = createSlice({
       const formatedData = citiesData
         .map((el) => {
           return {
-            [el.components?.city ? "city" : el.components._type]:
+            [el.components.city ? "city" : el.components._type]:
               el.components?.city ||
               el.components[`${el.components._type}`] ||
               "",

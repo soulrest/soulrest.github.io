@@ -7,7 +7,6 @@ import { getChinaAQIWarn, getUSAQIWarn } from "../Utils/getInfoByAQIValue";
 const WeatherAndAirQualityTable = (props) => {
   const navigate = useNavigate();
   const { city, country, state, weather, pollution } = props.data;
-
   const {
     color: cnAQIColor,
     message: cnAQIMessage,

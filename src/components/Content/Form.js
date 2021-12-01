@@ -1,3 +1,5 @@
+import React from "react";
+
 const Form = (props) => {
   const handleChange = (e) => {
     props.handleCityChange(e.target.value);

@@ -15,7 +15,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { results } = useSelector((state) => state.cities);
-  const weatherAndAirQualityData = useSelector((state) => state.weather);
+  const weatherAndAirQualityData = useSelector((state) => state.weather.city);
 
   const onHandleCityChange = (value) => {
     setSity(value);

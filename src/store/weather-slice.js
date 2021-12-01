@@ -4,43 +4,33 @@ const IQAIR_URL = process.env.REACT_APP_IQAIR_URL;
 const IQAIR_KEY = process.env.REACT_APP_IQAIR_KEY;
 
 const weatherSlice = createSlice({
-  name: "cities",
+  name: "weather",
   initialState: {
-    country: "",
-    state: "",
-    city: "",
-    weather: {
-      temperature: "",
-      temperature_min: "",
-      atmospheric_presure: "",
-      humidity: "",
-      wind_speed: "",
-      wind_direction: "",
-    },
-    pollution: {
-      aqius: "",
-      aqicn: "",
-    },
+    city: {},
   },
   reducers: {
     updateWeatherAndAirQualityData(state, action) {
       const { data } = action.payload;
       const { weather, pollution } = data.current;
-      state.country = data.country;
-      state.city = data.city;
-      state.state = data.state;
-      state.weather = {
-        temperature: weather.tp,
-        atmospheric_presure: weather.pr,
-        humidity: weather.hu,
-        wind_speed: weather.ws,
-        wind_direction: weather.wd,
-        icon: weather.ic,
+      const cityData = {
+        id: data.location.coordinates[1].toString(),
+        country: data.country,
+        city: data.city,
+        state: data.state,
+        weather: {
+          temperature: weather.tp,
+          atmospheric_presure: weather.pr,
+          humidity: weather.hu,
+          wind_speed: weather.ws,
+          wind_direction: weather.wd,
+          icon: weather.ic,
+        },
+        pollution: {
+          aqius: pollution.aqius,
+          aqicn: pollution.aqicn,
+        },
       };
-      state.pollution = {
-        aqius: pollution.aqius,
-        aqicn: pollution.aqicn,
-      };
+      state.city = cityData;
     },
   },
 });
