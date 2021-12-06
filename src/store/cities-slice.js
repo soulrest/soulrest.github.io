@@ -7,6 +7,7 @@ const citiesSlice = createSlice({
   name: "cities",
   initialState: {
     results: [],
+    isFetchingData: false,
   },
   reducers: {
     replaceCitiesData(state, action) {
@@ -43,11 +44,15 @@ const citiesSlice = createSlice({
         }, []);
       state.results = formatedData;
     },
+    triggerFetchingState(state) {
+      state.isFetchingData = !state.isFetchingData;
+    },
   },
 });
 
 export const fetchCitiesData = (city) => {
   return async (dispatch) => {
+    dispatch(citiesActions.triggerFetchingState());
     const fetchData = async () => {
       const response = await fetch(
         `${OC_URL}json?q=${city}&language=en&key=${OC_KEY}`
@@ -63,6 +68,7 @@ export const fetchCitiesData = (city) => {
           citiesData: citiesData.results,
         })
       );
+      dispatch(citiesActions.triggerFetchingState());
     } catch (err) {
       console.error(err);
     }

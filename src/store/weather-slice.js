@@ -3,10 +3,33 @@ import { createSlice } from "@reduxjs/toolkit";
 const IQAIR_URL = process.env.REACT_APP_IQAIR_URL;
 const IQAIR_KEY = process.env.REACT_APP_IQAIR_KEY;
 
+const updateLocalStorage = (action, value) => {
+  let history = JSON.parse(localStorage.getItem("history"));
+  switch (action) {
+    case "add":
+      if (!history && typeof value === "object") {
+        localStorage.setItem("history", JSON.stringify([value]));
+        return;
+      } else if (typeof value === "object") {
+        history.push(value);
+      }
+      break;
+    case "delete":
+      if (typeof value === "string")
+        history = history.filter((el) => el.id !== value);
+      break;
+    default:
+      if (history) return history;
+      else return [];
+  }
+  localStorage.setItem("history", JSON.stringify(history));
+};
+
 const weatherSlice = createSlice({
   name: "weather",
   initialState: {
     city: {},
+    history: [],
   },
   reducers: {
     updateWeatherAndAirQualityData(state, action) {
@@ -32,6 +55,25 @@ const weatherSlice = createSlice({
       };
       state.city = cityData;
     },
+    addToHistory(state, action) {
+      const newHistoryItem = action.payload;
+      const existingItem = state.history.find(
+        (el) => el.id === newHistoryItem.id
+      );
+      if (!existingItem) {
+        state.history.push(newHistoryItem);
+        updateLocalStorage("add", newHistoryItem);
+      }
+    },
+    removeFromHistory(state, action) {
+      const id = action.payload;
+      state.history = state.history.filter((item) => item.id !== id);
+      updateLocalStorage("delete", id);
+    },
+    getHistoryFromStorage(state) {
+      const history = updateLocalStorage();
+      state.history = history;
+    },
   },
 });
 
@@ -48,7 +90,7 @@ export const fetchWeatherAndAirQualityData = (lat, lon) => {
     try {
       const weatherData = await fetchData();
       dispatch(weatherActions.updateWeatherAndAirQualityData(weatherData));
-      return true;
+      return weatherData;
     } catch (err) {
       console.error(err);
     }
