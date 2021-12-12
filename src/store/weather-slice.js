@@ -6,8 +6,8 @@ const IQAIR_KEY = process.env.REACT_APP_IQAIR_KEY;
 const updateLocalStorage = (arr) => {
   let history = JSON.parse(localStorage.getItem("history")) || [];
   if (!arr) return history;
-  localStorage.setItem("history", JSON.stringify(arr));
   if (arr.length === 0) return localStorage.removeItem("history");
+  localStorage.setItem("history", JSON.stringify(arr));
 };
 
 const weatherSlice = createSlice({
