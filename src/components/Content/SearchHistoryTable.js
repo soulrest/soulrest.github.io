@@ -9,7 +9,7 @@ const SearchHistoryTable = (props) => {
   const citiesSearchHistory = props.history;
   let output;
   if (citiesSearchHistory.length === 0)
-    output = <div>No search history yet!</div>;
+    output = <div className="text-center fs-3">No search history yet...</div>;
   else
     output = citiesSearchHistory.map((city) => (
       <WeatherAndAirQualityTable

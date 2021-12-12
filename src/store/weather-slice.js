@@ -3,26 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const IQAIR_URL = process.env.REACT_APP_IQAIR_URL;
 const IQAIR_KEY = process.env.REACT_APP_IQAIR_KEY;
 
-const updateLocalStorage = (action, value) => {
-  let history = JSON.parse(localStorage.getItem("history"));
-  switch (action) {
-    case "add":
-      if (!history && typeof value === "object") {
-        localStorage.setItem("history", JSON.stringify([value]));
-        return;
-      } else if (typeof value === "object") {
-        history.push(value);
-      }
-      break;
-    case "delete":
-      if (typeof value === "string")
-        history = history.filter((el) => el.id !== value);
-      break;
-    default:
-      if (history) return history;
-      else return [];
-  }
-  localStorage.setItem("history", JSON.stringify(history));
+const updateLocalStorage = (arr) => {
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  if (!arr) return history;
+  localStorage.setItem("history", JSON.stringify(arr));
+  if (arr.length === 0) return localStorage.removeItem("history");
 };
 
 const weatherSlice = createSlice({
@@ -62,17 +47,17 @@ const weatherSlice = createSlice({
       );
       if (!existingItem) {
         state.history.push(newHistoryItem);
-        updateLocalStorage("add", newHistoryItem);
+        updateLocalStorage(state.history);
       }
     },
     removeFromHistory(state, action) {
       const id = action.payload;
-      state.history = state.history.filter((item) => item.id !== id);
-      updateLocalStorage("delete", id);
+      const history = state.history.filter((el) => el.id !== id);
+      state.history = history;
+      updateLocalStorage(history);
     },
     getHistoryFromStorage(state) {
-      const history = updateLocalStorage();
-      state.history = history;
+      state.history = updateLocalStorage();
     },
   },
 });

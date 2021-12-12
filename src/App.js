@@ -12,6 +12,7 @@ import Form from "./components/Content/Form";
 import CitiesTable from "./components/Content/CitiesTable";
 import WeatherAndAirQualityTable from "./components/Content/WeatherAndPollutionTable/WeatherAndAirQualityTable";
 import SearchHistoryTable from "./components/Content/SearchHistoryTable";
+import PageNotFound from "./components/UI/PageNotFound";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 import "./App.css";
 
@@ -87,6 +88,7 @@ function App() {
             />
           }
         />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
